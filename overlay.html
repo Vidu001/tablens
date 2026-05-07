@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TabLens</title>
+  <link rel="stylesheet" href="overlay.css" />
+</head>
+<body>
+
+  <!--
+    #tablens-root
+    ─────────────
+    The entire overlay UI lives in this single container.
+    It is injected as an iframe into any host page, so all styles are
+    fully isolated — the host page's CSS cannot interfere.
+
+    Structure:
+      ┌─────────────────────────────────────────┐
+      │  🔍  [search input .....................]  │
+      ├─────────────────────────────────────────┤
+      │  Result 1 (favicon · title · url)        │
+      │  snippet text …                          │
+      ├─────────────────────────────────────────┤
+      │  Result 2 …                              │
+      ├─────────────────────────────────────────┤
+      │  ↑↓ navigate   ↵ open   esc close        │  ← keyboard hints
+      └─────────────────────────────────────────┘
+  -->
+
+  <div id="tablens-root">
+
+    <!-- Search input row -->
+    <div id="search-wrapper">
+      <span id="search-icon" aria-hidden="true">
+        <!-- Inline SVG magnifier — no external image needed -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </span>
+
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search across all tabs…"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-label="Search all tabs"
+        aria-autocomplete="list"
+        aria-controls="results-list"
+        role="combobox"
+        aria-expanded="false"
+      />
+
+      <!-- Live count badge — updated by overlay.js -->
+      <span id="results-count" aria-live="polite"></span>
+    </div>
+
+    <!-- Results list -->
+    <ul
+      id="results-list"
+      role="listbox"
+      aria-label="Search results"
+    >
+      <!-- Items injected here by overlay.js -->
+    </ul>
+
+    <!-- Keyboard hints footer -->
+    <footer id="keyboard-hints" aria-hidden="true">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> switch tab</span>
+      <span><kbd>esc</kbd> close</span>
+      <span class="hint-divider">· triple-click also opens</span>
+    </footer>
+
+  </div>
+
+  <script src="overlay.js"></script>
+</body>
+</html>
